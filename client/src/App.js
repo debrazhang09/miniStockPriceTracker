@@ -1,4 +1,6 @@
-import React ,{useState} from 'react';
+import React , {useState, useEffect} from 'react';
+import axios from 'axios';
+
 import Dropdown from './components/Dropdown.js';
 
 export default function App() {
@@ -16,11 +18,31 @@ export default function App() {
   ]
 
   const [selectedStock, setSelectedStock] = useState('');
+
   const [selectedStockPrice, setSelectedStockPrice] = useState(0);
+  const [loading, setLoading] = useState(true); // Initialize loading state
+  const [error, setError] = useState(null);
 
   const handleStockChange = (value) => {
     setSelectedStock(value);
   };
+
+  const handleButtonClick = (stock) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${stock}/price`);
+        setSelectedStockPrice(response.data); // Set the fetched data
+
+      } catch (err) {
+        setError(err); // Set the error if something goes wrong
+      } finally {
+        setLoading(false); // Set loading to false once fetching is complete
+      }
+    };
+
+    fetchData();
+  }
+
 
 
   return (
@@ -28,9 +50,10 @@ export default function App() {
       <h1>Top 100 Stocks Current Price</h1>
       <Dropdown stocks={preDefinedStock} onStockChange={handleStockChange}/>
       <p>Selected Stock: {selectedStock}</p>
-      <button onClick={() => {setSelectedStockPrice(0)}}>
-        Get Current Price {selectedStockPrice}
+      <button onClick={() => {handleButtonClick(selectedStock)}}>
+        Get Current Price
       </button>
+      <p>{selectedStockPrice}</p>
     </>
   );
 }

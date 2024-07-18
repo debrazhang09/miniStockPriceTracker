@@ -1,4 +1,5 @@
-module.export ={[
+module.exports = {
+  preDefinedStocks :[
   { Ticker: 'AAPL', 'Current Price': 224.44 },
   { Ticker: 'MSFT', 'Current Price': 437.5706 },
   { Ticker: 'GOOGL', 'Current Price': 177.54 },
