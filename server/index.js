@@ -1,4 +1,6 @@
 const {preDefinedStocks} = require('../yammyData.js');
+
+
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -10,9 +12,13 @@ app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 
+//save predefined top 100 sp500 stocks data
+await saveStockData();
+
+
+
 app.post('/price', (req, res) => {
 
-  // console.log(req.url)
   const data = req.body;
 
   //mocked API : only selected Stocks Price would be change
@@ -29,15 +35,8 @@ app.post('/price', (req, res) => {
     temp.price = Number(preDefinedStocks[stock.value] * (1 + sign)).toFixed(3);
     mockedData.push(temp);
 
-
   })
-  // console.log(mockedData);
   res.send(mockedData);
-
-
-
-
-
 });
 
 

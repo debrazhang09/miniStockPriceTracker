@@ -5,7 +5,7 @@ module.exports = {
     GOOGL: 177.54,
     AMZN: 183.41,
     META: 475.185,
-    'BRK.B': 0,
+    'BRK.B': 200,
     TSLA: 252.395,
     NVDA: 120.4004,
     JPM: 209.85,
