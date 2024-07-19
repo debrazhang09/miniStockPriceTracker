@@ -1,4 +1,5 @@
 const {preDefinedStocks} = require('../yammyData.js');
+const {getPredfinedStocksFn} = require('./controller.js')
 
 
 const path = require('path');
@@ -12,10 +13,7 @@ app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 
-//save predefined top 100 sp500 stocks data
-await saveStockData();
-
-
+app.get('/predefinedStocks', getPredfinedStocksFn);
 
 app.post('/price', (req, res) => {
 

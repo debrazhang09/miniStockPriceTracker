@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import Select from 'react-select';
-import {stocks} from '../../../stocksName.js';
+// import {stocks} from '../../../stocksName.js';
 
-export default function Dropdown({saveSubmitStocks}) {
+export default function Dropdown({saveSubmitStocks, stocks}) {
 
   const [selectedStocks, setSelectedStocks] = useState([]);
 

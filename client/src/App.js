@@ -7,6 +7,7 @@ import Dropdown from './components/Dropdown.js';
 import Lists from './components/Lists.js';
 
 export default function App() {
+  const [predefinedStocks, setPredefinedStocks] = useState([]);
   const [finalStocks, setFinalStocks] = useState([]);
 
   const [selectedStocksPrice, setSelectedStocksPrice] = useState([]);
@@ -15,6 +16,16 @@ export default function App() {
   const [fetchDataTrigger, setFetchDataTrigger] = useState(false);
   const [fetchDataEnabler, setFetchDataEnabler] = useState(false);
 
+
+  const fetchPredefinedStocks = async () => {
+    try {
+      const response = await axios.get('/predefinedStocks');
+      setPredefinedStocks(response.data);
+
+    } catch(err) {
+      setError(err);
+    }
+  }
 
   const fetchData = async () => {
     setLoading(true);
@@ -32,20 +43,19 @@ export default function App() {
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     if (!fetchDataEnabler) return;
-
     fetchData();
-
     if (!finalStocks.length) return;
-
     // 1 second for testing
     const intervalId = setInterval(() => fetchData(), 1000 * 1) ;
-
     return () => clearInterval(intervalId);
+  }, [fetchDataTrigger]);
 
+  useEffect(() => {
+    fetchPredefinedStocks();
+  }, [])
 
-  }, [fetchDataTrigger])
 
   const saveSubmitStocks = (stocks) => {
     setFinalStocks(stocks);
@@ -54,11 +64,10 @@ export default function App() {
   }
 
 
-
   return (
     <>
       <h1>Top 100 Stocks Current Price</h1>
-      <Dropdown saveSubmitStocks={saveSubmitStocks}/>
+      <Dropdown saveSubmitStocks={saveSubmitStocks} stocks={predefinedStocks}/>
       <Lists stocks={selectedStocksPrice}/>
 
     </>
