@@ -36,9 +36,9 @@ export default function App() {
     if (!fetchDataEnabler) return;
 
     fetchData();
-    // setFetchDataTrigger(false);
+
+    if (!finalStocks.length) return;
     const intervalId = setInterval(() => fetchData(), 1000 * 1) ;
-    // setIntervalId(newIntelvalId);
 
     return () => clearInterval(intervalId);
 
