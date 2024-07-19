@@ -8,27 +8,31 @@ const app = express();
 
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.json());
 
-app.get('*/price', (req, res) => {
+app.post('/price', (req, res) => {
 
   // console.log(req.url)
-  let stockName = req.url.split('/')[1];
+  const data = req.body;
 
-  //mocked API
+  //mocked API : only selected Stocks Price would be change
   let sign = Math.random();
   if (sign < 0.5) {
     sign = - sign;
   }
 
-  let mockedData = {};
+  let mockedData = [];
 
-  preDefinedStocks.forEach((stock) => {
+  data.forEach((stock) => {
+    let temp = {}
+    temp.name = stock.value;
+    temp.price = Number(preDefinedStocks[stock.value] * (1 + sign)).toFixed(3);
+    mockedData.push(temp);
 
-  mockedData[stock.Ticker] = Number(stock['Current Price'] * (1 + sign)).toFixed(3);
 
   })
-
-  res.send(mockedData[stockName]);
+  // console.log(mockedData);
+  res.send(mockedData);
 
 
 

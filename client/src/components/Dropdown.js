@@ -1,22 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Select from 'react-select';
+import {stocks} from '../../../stocksName.js';
 
-export default function Dropdown({stocks, onStockChange}) {
+export default function Dropdown({saveSubmitStocks}) {
 
+  const [selectedStocks, setSelectedStocks] = useState([]);
 
-  const handleChange = (event) => {
-    onStockChange(event.target.value);
+  const handleChange = (stocks) => {
+    setSelectedStocks(stocks);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    saveSubmitStocks(selectedStocks);
+  }
+
   return (
     <div>
-      <label htmlFor="dropdown">Select one stock:</label>
-      <select id="dropdown" onChange={handleChange}>
-        <option value="">--Select one stock--</option>
-        {stocks.map(stock => (
-          <option key={stock} value={stock}>
-            {stock}
-          </option>
-        ))}
-      </select>
+      <h4>Please Selected Stocks</h4>
+      <Select
+      options={stocks}
+      value={selectedStocks}
+      onChange={handleChange}
+      isMulti={true}
+      />
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 }
