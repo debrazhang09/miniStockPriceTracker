@@ -13,6 +13,8 @@ export default function Dropdown({saveSubmitStocks}) {
   const handleSubmit = (event) => {
     event.preventDefault();
     saveSubmitStocks(selectedStocks);
+    setSelectedStocks([]);
+
   }
 
   return (

@@ -13,35 +13,42 @@ export default function App() {
   const [loading, setLoading] = useState(true); // Initialize loading state
   const [error, setError] = useState(null);
   const [fetchDataTrigger, setFetchDataTrigger] = useState(false);
+  const [fetchDataEnabler, setFetchDataEnabler] = useState(false);
 
 
+  const fetchData = async () => {
+    setLoading(true);
+
+    try {
+
+      const response = await axios.post(`/price`, finalStocks);
+      setSelectedStocksPrice(response.data); // Set the fetched data
+
+    } catch (err) {
+      setError(err); // Set the error if something goes wrong
+    } finally {
+      setLoading(false); // Set loading to false once fetching is complete
+
+    }
+  };
 
   useEffect( () => {
-    if (!fetchDataTrigger) return;
+    if (!fetchDataEnabler) return;
 
-    const fetchData = async () => {
+    fetchData();
+    // setFetchDataTrigger(false);
+    const intervalId = setInterval(() => fetchData(), 1000 * 1) ;
+    // setIntervalId(newIntelvalId);
+
+    return () => clearInterval(intervalId);
 
 
-      setLoading(true);
-
-      try {
-
-        const response = await axios.post(`/price`, finalStocks);
-        setSelectedStocksPrice(response.data); // Set the fetched data
-
-      } catch (err) {
-        setError(err); // Set the error if something goes wrong
-      } finally {
-        setLoading(false); // Set loading to false once fetching is complete
-        setFetchDataTrigger(false);
-      }
-    };
-     fetchData();
   }, [fetchDataTrigger])
 
   const saveSubmitStocks = (stocks) => {
-    setFetchDataTrigger(true);
     setFinalStocks(stocks);
+    setFetchDataEnabler(true);
+    setFetchDataTrigger(prev => !prev);
   }
 
 
