@@ -48,7 +48,7 @@ export default function App() {
     fetchData();
     if (!finalStocks.length) return;
     // 10 second for testing
-    const intervalId = setInterval(() => fetchData(), 1000 * 10) ;
+    const intervalId = setInterval(() => fetchData(), 1000 * 60) ;
     return () => clearInterval(intervalId);
   }, [fetchDataTrigger]);
 
