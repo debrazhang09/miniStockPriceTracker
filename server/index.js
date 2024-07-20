@@ -1,5 +1,5 @@
-const {preDefinedStocks} = require('../yammyData.js');
-const {getPredfinedStocksFn} = require('./controller.js')
+const {getPredfinedStocksFn, saveStocksPriceFn} = require('./controller.js');
+const {saveStocksPrice} = require('./model.js')
 
 
 const path = require('path');
@@ -15,27 +15,7 @@ app.use(express.json());
 
 app.get('/predefinedStocks', getPredfinedStocksFn);
 
-app.post('/price', (req, res) => {
-
-  const data = req.body;
-
-  //mocked API : only selected Stocks Price would be change
-  let sign = Math.random();
-  if (sign < 0.5) {
-    sign = - sign;
-  }
-
-  let mockedData = [];
-
-  data.forEach((stock) => {
-    let temp = {}
-    temp.name = stock.value;
-    temp.price = Number(preDefinedStocks[stock.value] * (1 + sign)).toFixed(3);
-    mockedData.push(temp);
-
-  })
-  res.send(mockedData);
-});
+app.post('/price', saveStocksPriceFn);
 
 
 const port = 3000;

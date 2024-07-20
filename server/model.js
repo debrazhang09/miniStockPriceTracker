@@ -12,24 +12,15 @@ const getPredfinedStocks = async() => {
 
 }
 
-// const saveStocksPrice = async(stocks) => {
-//   try {
-//     await connection();
+const saveStocksPrice = async(stocks) => {
+  //stocks = [{name : 'amazon', price : 200}];
+  try {
+    const operations = stocks.map((stock) => ({'updateOne' : { 'filter' : {'name' : stock.name} , 'update' : {'$set' : {'price' : stock.price}}}}));
+    await Stock.bulkWrite(operations);
+    console.log('Update stocks price successfully');
+  } catch (error) {
+    console.error('Error updating stocks price:', error);
+  }
 
-//     const stockData = Object.keys(preDefinedStocks).map((stockName, index) => {
-//       return {
-//         'id' : index + 1,
-//         'name' : stockName,
-//         'price' : preDefinedStocks[stockName],
-//         'date' : new Date()
-//         }
-//     });
-//     // console.log(Stock, stockData)
-//     await Stock.insertMany(stockData);
-//     console.log('Stock data saved successfully');
-//   } catch (error) {
-//     console.error('Error saving stock data:', error);
-//   }
-
-// }
-module.exports = {getPredfinedStocks};
+}
+module.exports = {getPredfinedStocks, saveStocksPrice};
